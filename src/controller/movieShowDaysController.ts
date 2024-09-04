@@ -4,6 +4,7 @@ import * as moviesController from "./moviesController";
 import { validate } from "class-validator";
 import { AdminAddMovieShowDayInput } from "src/types/dto/AdminAddMovieShowDayInput";
 import { plainToInstance } from "class-transformer";
+import * as movieShowDaysRepository from "src/Repositories/movieShowDaysRepository";
 type getWithFilterReqQuery = {
   date?: string;
   date_lt?: string;
@@ -24,10 +25,7 @@ export const get: ReqHandler = async (req: { query: any }, res) => {
     Object.keys(req.query).length === 0 ||
     (Object.keys(req.query).length === 1 && page)
   ) {
-    const result = await db.query(
-      `SELECT * FROM movie_show_days LIMIT 10 OFFSET ${offset}`
-    );
-    const showDays = result.rows;
+    const showDays = await movieShowDaysRepository.get10();
     return res.json({ showDays });
   } else {
     const showDays = await getWithFilter(req.query);

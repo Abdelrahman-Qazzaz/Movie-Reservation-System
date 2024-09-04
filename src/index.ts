@@ -18,6 +18,7 @@ import authRouter from "./Auth/authRouter";
 import { verifyTokenAndSetReqUser } from "./Auth/JWT";
 import cronScheduler from "./cron/RemoveOldMovieShowDays";
 
+cronScheduler();
 env.config();
 
 const app = express();
