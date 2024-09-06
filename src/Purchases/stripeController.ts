@@ -7,7 +7,7 @@ import sendEmail from "../utils/Email/sendEmail";
 import ReqHandler from "src/types/RequestHandler";
 
 export const createCheckoutSession: ReqHandler = async (req, res) => {
-  const { rows } = await db.query(
+  const rows = await db.query(
     `SELECT * FROM get_ticket_details(${req.params.ticket_id})`
   );
   console.log(rows);

@@ -17,6 +17,7 @@ import stripeRouter from "./Purchases/stripeRouter";
 import authRouter from "./Auth/authRouter";
 import { verifyTokenAndSetReqUser } from "./Auth/JWT";
 import cronScheduler from "./cron/RemoveOldMovieShowDays";
+import db from "./db";
 
 cronScheduler();
 env.config();
@@ -38,8 +39,8 @@ app.use("/auth", authRouter);
 app.use("/movies", moviesRouter);
 app.use("/movie-show-days", movieShowDaysRouter);
 
-app.get("/temp", verifyTokenAndSetReqUser, (req, res) => {
-  res.status(200).json({ user: req.user });
+app.get("/temp", verifyTokenAndSetReqUser, async (req, res) => {
+  res.sendStatus(200);
 });
 
 app.listen(port, () => {

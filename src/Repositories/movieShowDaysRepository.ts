@@ -8,65 +8,58 @@ type getWithFilterReqQuery = {
   time_of_day_gt: string;
   time_of_day_lt: string;
 };
-type DBquery = {
-  text: string;
-  values: any[];
-};
+type WhereClause = any;
 
 export async function getById(id: string) {
-  const { rows } = await db.query(
-    "SELECT * FROM movie_show_days WHERE id = $1",
-    [id]
-  );
-  return rows[0];
+  try {
+    const movieShowDay = await db.movie_show_days.findFirst({
+      where: { id: parseInt(id) },
+    });
+    return movieShowDay;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 }
 
 export async function insert(movie_id: number, date: string) {
-  const results = await db.query(
-    "INSERT INTO movie_show_days (movie_id,date) VALUES($1,$2)",
-    [movie_id, date]
-  );
-  console.log(results);
-  return results.rows[0];
+  const movieShowDay = await db.movie_show_days.create({
+    data: { movie_id, date },
+  });
+  return movieShowDay;
 }
 export async function get_movie_show_day_details(movieShowDayId: string) {
-  const { rows } = await db.query(
-    `SELECT * FROM get_movie_show_day_details($1)`,
-    [movieShowDayId]
-  );
-  return rows;
+  try {
+    const rows =
+      await db.$queryRaw`SELECT * FROM get_movie_show_day_details(${movieShowDayId})`;
+    return rows;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 }
-export async function get10(offset?: number) {
-  const values: any[] = offset ? [offset] : [];
-
-  const result = await db.query(
-    `SELECT * FROM movie_show_days LIMIT 10 ${offset ? `OFFSET $1` : ""}`,
-    values
-  );
-  return result.rows;
+export async function get10(skip: number = 0) {
+  const movieShowDays = await db.movie_show_days.findMany({ take: 10, skip });
+  return movieShowDays;
 }
 
 export async function getWithFilter(reqQuery: getWithFilterReqQuery) {
-  const query = {
-    text: "SELECT * FROM movie_show_days WHERE",
-    values: [],
-  };
+  const where = {};
 
-  helperFuncFilterByHasInstancesWithSeatsLeft(reqQuery, query);
+  helperFuncFilterByHasInstancesWithSeatsLeft(reqQuery, where);
 
   // handle date
-  helperFuncFilterByDate(reqQuery, query);
+  helperFuncFilterByDate(reqQuery, where);
 
-  helperFunctionFilterByTimeOfDay(reqQuery, query);
+  helperFunctionFilterByTimeOfDay(reqQuery, where);
 
-  console.log(query);
-  const { rows } = await db.query(query);
+  const rows = await db.movie_show_days.findMany({ where });
   return rows;
 }
 
 function helperFuncFilterByDate(
   reqQuery: getWithFilterReqQuery,
-  query: DBquery
+  where: WhereClause
 ) {
   // search by a specific date
   if (reqQuery.date) {
@@ -92,22 +85,21 @@ function helperFuncFilterByDate(
 
 function helperFuncFilterByHasInstancesWithSeatsLeft(
   reqQuery: getWithFilterReqQuery,
-  query: DBquery
+  where: WhereClause
 ) {
   if (
     typeof reqQuery.has_instances_with_seats_left === "undefined" ||
     reqQuery.has_instances_with_seats_left
   ) {
-    query.text += `${
-      query.values.length ? " AND" : ""
-    } has_instances_with_seats_left = TRUE`;
+    where.has_instances_with_seats_left = true;
   }
 }
 
 function helperFunctionFilterByTimeOfDay(
   reqQuery: getWithFilterReqQuery,
-  query: DBquery
+  query: WhereClause
 ) {
+  oh no 
   if (reqQuery.time_of_day_gt) {
     query.text += `${
       needsAnd(reqQuery, query) ? " AND" : ""
@@ -124,7 +116,7 @@ function helperFunctionFilterByTimeOfDay(
   }
 }
 
-function needsAnd(reqQuery: getWithFilterReqQuery, query: DBquery) {
+function needsAnd(reqQuery: getWithFilterReqQuery, query: WhereClause) {
   if (query.values.length > 0) return true;
   if (
     typeof reqQuery.has_instances_with_seats_left === "undefined" ||

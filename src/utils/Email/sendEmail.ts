@@ -11,7 +11,7 @@ import ReactDOMServer from "react-dom/server";
 
 async function sendEmail(customerDetails: any, ticket: any) {
   try {
-    const { rows } = await db.query("SELECT * FROM get_ticket_details($1)", [
+    const rows = await db.query("SELECT * FROM get_ticket_details($1)", [
       ticket.description.split(":")[1].trim(),
     ]);
 

@@ -23,7 +23,7 @@ export const get: ReqHandler = async (req: any, res) => {
 export const getByTitle: ReqHandler = async (req, res) => {
   const { title } = req.params;
   if (!title || title.trim() === "") return res.sendStatus(400);
-  const { rows } = await db.query("SELECT * FROM movies WHERE TITLE LIKE $1", [
+  const rows = await db.query("SELECT * FROM movies WHERE TITLE LIKE $1", [
     `%${title}%`,
   ]);
 
@@ -31,7 +31,7 @@ export const getByTitle: ReqHandler = async (req, res) => {
 };
 
 export const getById = async (id: number) => {
-  const { rows } = await db.query("SELECT * FROM movies WHERE id = $1", [id]);
+  const rows = await db.query("SELECT * FROM movies WHERE id = $1", [id]);
   return rows.length ? rows[0] : null;
 };
 type reqQuery = {
@@ -103,7 +103,7 @@ async function getWithFilter(reqQuery: reqQuery) {
 
   console.log(query);
   try {
-    const { rows } = await db.query(query);
+    const rows = await db.query(query);
     return rows;
   } catch (error) {
     console.log(error);
