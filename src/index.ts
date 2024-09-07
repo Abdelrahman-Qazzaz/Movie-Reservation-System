@@ -18,6 +18,7 @@ import authRouter from "./Auth/authRouter";
 import { verifyTokenAndSetReqUser } from "./Auth/JWT";
 import cronScheduler from "./cron/RemoveOldMovieShowDays";
 import db from "./db";
+import MovieShowDay from "./types/Movie Show Days/movieShowDay";
 
 cronScheduler();
 env.config();
@@ -34,14 +35,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Register, Login (create and get token)
-app.use("/auth", authRouter);
+// app.use("/auth", authRouter);
 
-app.use("/movies", moviesRouter);
-app.use("/movie-show-days", movieShowDaysRouter);
+// app.use("/movies", moviesRouter);
+// app.use("/movie-show-days", movieShowDaysRouter);
 
-app.get("/temp", verifyTokenAndSetReqUser, async (req, res) => {
-  res.sendStatus(200);
-});
+app.get("/temp", async (req, res) => {});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

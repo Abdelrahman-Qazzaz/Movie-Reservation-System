@@ -9,63 +9,63 @@ datasource db {
 
 model movie_show_days {
   id                            Int                         @id(map: "showtimes_pkey") @default(autoincrement())
-  movie_id                      Int?
-  date                          DateTime?                   @db.Date
+  movie_id                      Int
+  date                          DateTime                    @db.Date
   has_instances_with_seats_left Boolean?
   recursion_flag                Boolean?
-  movies                        movies?                     @relation(fields: [movie_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "showtimes_movie_id_fkey")
+  movies                        movies                      @relation(fields: [movie_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "showtimes_movie_id_fkey")
   movie_show_days_instances     movie_show_days_instances[]
 }
 
 model movie_show_days_instances {
   id                                Int                                 @id(map: "show_days_instances_pkey") @default(autoincrement())
-  movie_show_day_id                 Int?
-  time                              DateTime?                           @db.Time(6)
-  has_seats_left                    Boolean?
-  movie_show_days                   movie_show_days?                    @relation(fields: [movie_show_day_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "show_days_instances_show_day_id_fkey")
+  movie_show_day_id                 Int
+  time                              DateTime                            @db.Time(6)
+  has_seats_left                    Boolean
+  movie_show_days                   movie_show_days                     @relation(fields: [movie_show_day_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "show_days_instances_show_day_id_fkey")
   movie_show_days_instances_tickets movie_show_days_instances_tickets[]
 }
 
 model movie_show_days_instances_tickets {
-  id                         Int                        @id(map: "show_days_instances_tickets_pkey") @default(autoincrement())
-  seat_position              String?                    @db.Char(2)
-  movie_show_day_instance_id Int?
+  id                         Int                       @id(map: "show_days_instances_tickets_pkey") @default(autoincrement())
+  seat_position              String                    @db.Char(2)
+  movie_show_day_instance_id Int
   reserved_by_user_id        Int?
-  users                      users?                     @relation(fields: [reserved_by_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "show_days_instances_tickets_reserved_by_user_id_fkey")
-  movie_show_days_instances  movie_show_days_instances? @relation(fields: [movie_show_day_instance_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "show_days_instances_tickets_show_day_instance_id_fkey")
+  users                      users?                    @relation(fields: [reserved_by_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "show_days_instances_tickets_reserved_by_user_id_fkey")
+  movie_show_days_instances  movie_show_days_instances @relation(fields: [movie_show_day_instance_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "show_days_instances_tickets_show_day_instance_id_fkey")
   transactions               transactions[]
 }
 
 model movies {
   id              Int               @id @default(autoincrement())
-  title           String?
-  release_date    DateTime?         @db.Date
+  title           String
+  release_date    DateTime          @db.Date
   languages       String[]
-  description     String?
-  popularity      Float?
-  voteaverage     Float?
-  votecount       Int?
-  adult           Boolean?
-  image_url       String?
+  description     String
+  popularity      Float
+  voteaverage     Float
+  votecount       Int
+  adult           Boolean
+  image_url       String
   movie_show_days movie_show_days[]
 }
 
 model transactions {
-  id                                Int                                @id @default(autoincrement())
+  id                                Int                               @id @default(autoincrement())
   user_id                           Int
-  purchased_ticket_id               Int?
-  purchased_item_amount_total       Float?
-  purchased_item_currency           String?                            @db.VarChar(10)
-  movie_show_days_instances_tickets movie_show_days_instances_tickets? @relation(fields: [purchased_ticket_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users                             users                              @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  purchased_ticket_id               Int
+  purchased_item_amount_total       Float
+  purchased_item_currency           String                            @db.VarChar(10)
+  movie_show_days_instances_tickets movie_show_days_instances_tickets @relation(fields: [purchased_ticket_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users                             users                             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model users {
   id                                Int                                 @id @default(autoincrement())
-  full_name                         String?
-  phone_number                      String?
+  full_name                         String
+  phone_number                      String
   email                             String                              @unique(map: "unique_email_constraint")
-  password                          String?
+  password                          String
   movie_show_days_instances_tickets movie_show_days_instances_tickets[]
   transactions                      transactions[]
 }
