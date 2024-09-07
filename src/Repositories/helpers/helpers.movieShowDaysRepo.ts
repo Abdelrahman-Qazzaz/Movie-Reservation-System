@@ -1,4 +1,3 @@
-import { movie_show_days } from "@prisma/client";
 import db from "src/db";
 import { getWithFilterReqQuery } from "src/types/Movie Show Days/filter.movieShowDays";
 import MovieShowDay from "src/types/Movie Show Days/movieShowDay";
@@ -10,7 +9,9 @@ export async function filterByTimeOfDay(reqQuery: getWithFilterReqQuery) {
     const lt: MovieShowDay[] =
       await db.$queryRaw`SELECT * FROM filter_show_days_by_the_times_of_their_instances_lt(${reqQuery.time_of_day_lt});`;
     if (gt.length && lt.length)
-      return gt.filter((movieShowDay) => lt.includes(movieShowDay));
+      return gt.filter((movieShowDay) =>
+        lt.some((ltItem) => ltItem.id === movieShowDay.id)
+      );
     if (gt.length) return gt;
     if (lt.length) return lt;
     return null;
@@ -31,31 +32,46 @@ export async function filterByTimeOfDay(reqQuery: getWithFilterReqQuery) {
 
 export function filterByDate(
   reqQuery: getWithFilterReqQuery,
-  movieShowDays: MovieShowDay[]
+  movieShowDays: MovieShowDay[] | null
 ) {
+  if (!movieShowDays) return null;
+
   // search by a specific date
   if (reqQuery.date) {
-    return movieShowDays.filter(
+    movieShowDays = movieShowDays.filter(
       (movieShowDay) => movieShowDay.date === new Date(reqQuery.date!)
-      // left here
     );
   }
   // search by a range
   else {
     if (reqQuery.date_gt) {
-      // where.date = { gt: reqQuery.date_gt };
+      movieShowDays = movieShowDays.filter(
+        (movieShowDay) => movieShowDay.date > new Date(reqQuery.date_gt!)
+      );
     }
     if (reqQuery.date_lt) {
-      // where.date = { lt: reqQuery.date_lt };
+      movieShowDays = movieShowDays.filter(
+        (movieShowDay) => movieShowDay.date < new Date(reqQuery.date_lt!)
+      );
     }
   }
+  return movieShowDays;
 }
 
-// export function filterByHasInstancesWithSeatsLeft(movieShowDays) {
-//   if (
-//     typeof reqQuery.has_instances_with_seats_left === "undefined" ||
-//     reqQuery.has_instances_with_seats_left
-//   ) {
-//     where.has_instances_with_seats_left = true;
-//   }
-// }
+export function filterByHasInstancesWithSeatsLeft(
+  reqQuery: getWithFilterReqQuery,
+  movieShowDays: MovieShowDay[] | null
+) {
+  if (!movieShowDays) return null;
+  if (reqQuery.has_instances_with_seats_left === "true") {
+    movieShowDays.filter(
+      (movieShowDay) => movieShowDay.has_instances_with_seats_left
+    );
+  }
+  if (reqQuery.has_instances_with_seats_left === "false") {
+    movieShowDays.filter(
+      (movieShowDay) => !movieShowDay.has_instances_with_seats_left
+    );
+  }
+  return movieShowDays;
+}

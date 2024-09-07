@@ -37,11 +37,13 @@ app.use(express.json());
 //Register, Login (create and get token)
 // app.use("/auth", authRouter);
 
-// app.use("/movies", moviesRouter);
-// app.use("/movie-show-days", movieShowDaysRouter);
+app.use("/movies", moviesRouter);
+app.use("/movie-show-days", movieShowDaysRouter);
 
 app.get("/temp", async (req, res) => {});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+// make other repo files

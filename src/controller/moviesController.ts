@@ -1,21 +1,24 @@
 import ReqHandler from "src/types/RequestHandler";
 import db from "../db";
-
-export const get: ReqHandler = async (req: any, res) => {
-  const { page } = req.query;
+import * as moviesRepository from "../Repositories/moviesRepository";
+export const get: ReqHandler = async (req: { query: any }, res) => {
+  let { page, limit } = req.query;
+  limit = Number(limit);
   const offset = page ? page * 10 : 0;
-  if (
-    Object.keys(req.query).length === 0 ||
-    (Object.keys(req.query).length === 1 && page)
-  ) {
-    const result = await db.query(
-      `SELECT * FROM movies LIMIT 10 OFFSET ${offset}`
-    );
-    const movies = result.rows;
-    return res.json({ movies });
+
+  if (Object.keys(req.query).length === 0)
+    return await moviesRepository.getAll();
+
+  if (Object.keys(req.query).length === 1 && page) {
+    const showDays = await moviesRepository.get10(offset);
+    return res.json({ showDays });
   } else {
-    const movies = await getWithFilter(req.query);
-    return res.json({ movies });
+    const showDays = await moviesRepository.getWithFilter(
+      req.query,
+      offset,
+      limit
+    );
+    return res.json({ showDays });
   }
 };
 

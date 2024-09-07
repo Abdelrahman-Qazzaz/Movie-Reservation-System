@@ -7,16 +7,22 @@ import { plainToInstance } from "class-transformer";
 import * as movieShowDaysRepository from "src/Repositories/movieShowDaysRepository";
 
 export const get: ReqHandler = async (req: { query: any }, res) => {
-  const { page } = req.query;
+  let { page, limit } = req.query;
+  limit = Number(limit);
   const offset = page ? page * 10 : 0;
-  if (
-    Object.keys(req.query).length === 0 ||
-    (Object.keys(req.query).length === 1 && page)
-  ) {
-    const showDays = await movieShowDaysRepository.get10();
+
+  if (Object.keys(req.query).length === 0)
+    return await movieShowDaysRepository.getAll();
+
+  if (Object.keys(req.query).length === 1 && page) {
+    const showDays = await movieShowDaysRepository.get10(offset);
     return res.json({ showDays });
   } else {
-    const showDays = await movieShowDaysRepository.getWithFilter(req.query);
+    const showDays = await movieShowDaysRepository.getWithFilter(
+      req.query,
+      offset,
+      limit
+    );
     return res.json({ showDays });
   }
 };
@@ -58,5 +64,3 @@ export const add: ReqHandler = async (req, res) => {
     res.status(500).json({ message: "Internal server error", error });
   }
 };
-
-make other repository files
