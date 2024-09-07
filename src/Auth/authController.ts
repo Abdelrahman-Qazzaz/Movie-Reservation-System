@@ -2,10 +2,10 @@ import ReqHandler from "src/types/RequestHandler";
 import User from "src/types/User";
 
 import userRepository from "src/Repositories/userRepository";
-import RegisterAccountInput from "src/types/dto/RegisterAccountInput";
+import RegisterAccountInput from "src/dto/RegisterAccountInput";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
-import LogIntoAccountInput from "src/types/dto/LogIntoAccountInput";
+import LogIntoAccountInput from "src/dto/LogIntoAccountInput";
 import * as JWT from "./JWT";
 
 export const register: ReqHandler = async (req, res) => {

@@ -1,6 +1,6 @@
 import db from "src/db";
 import { getWithFilterReqQuery } from "src/types/Movie Show Days/filter.movieShowDays";
-import MovieShowDay from "src/types/Movie Show Days/movieShowDay";
+import MovieShowDay from "src/types/models/movieShowDay";
 
 export async function filterByTimeOfDay(reqQuery: getWithFilterReqQuery) {
   if (reqQuery.time_of_day_gt && reqQuery.time_of_day_lt) {

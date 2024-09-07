@@ -2,30 +2,11 @@ import ReqHandler from "src/types/RequestHandler";
 import db from "../db";
 import * as moviesController from "./moviesController";
 import { validate } from "class-validator";
-import { AdminAddMovieShowDayInput } from "src/types/dto/AdminAddMovieShowDayInput";
-import { plainToInstance } from "class-transformer";
+import { AdminAddMovieShowDayInput } from "src/dto/AdminAddMovieShowDayInput";
+import { plainToClass, plainToInstance } from "class-transformer";
 import * as movieShowDaysRepository from "src/Repositories/movieShowDaysRepository";
 
-export const get: ReqHandler = async (req: { query: any }, res) => {
-  let { page, limit } = req.query;
-  limit = Number(limit);
-  const offset = page ? page * 10 : 0;
-
-  if (Object.keys(req.query).length === 0)
-    return await movieShowDaysRepository.getAll();
-
-  if (Object.keys(req.query).length === 1 && page) {
-    const showDays = await movieShowDaysRepository.get10(offset);
-    return res.json({ showDays });
-  } else {
-    const showDays = await movieShowDaysRepository.getWithFilter(
-      req.query,
-      offset,
-      limit
-    );
-    return res.json({ showDays });
-  }
-};
+export const get: ReqHandler = async (req: { query: any }, res) => {};
 
 export const getById: ReqHandler = async (req, res) => {
   const showDay = await movieShowDaysRepository.getById(req.params.id);

@@ -1,5 +1,5 @@
 import express from "express";
-import * as moviesController from "../controller/moviesController";
+import * as moviesController from "../controllers/moviesController";
 
 const moviesRouter = express.Router();
 
@@ -12,7 +12,7 @@ const moviesRouter = express.Router();
 // release_date_lt
 // sort_by_popularity (boolean, default: false)
 moviesRouter.get("/", moviesController.get);
-moviesRouter.get("/:title", moviesController.getByTitle);
+// moviesRouter.get("/:title", moviesController.getByTitle);
 
 // add filter by release date
 

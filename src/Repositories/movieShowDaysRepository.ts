@@ -1,4 +1,4 @@
-import MovieShowDay from "src/types/Movie Show Days/movieShowDay";
+import MovieShowDay from "src/types/models/movieShowDay";
 import db from "../db";
 
 import * as helper from "./helpers/helpers.movieShowDaysRepo";
