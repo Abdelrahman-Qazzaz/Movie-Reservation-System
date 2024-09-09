@@ -1,40 +1,20 @@
 import {
   IsString,
-  IsEmail,
   IsNotEmpty,
   Length,
-  IsPhoneNumber,
+  Contains,
+  IsMobilePhone,
 } from "class-validator";
+import LogIntoAccountInput from "./LogIntoAccountInput";
 
-class RegisterAccountInput {
+class RegisterAccountInput extends LogIntoAccountInput {
   @IsString()
   @IsNotEmpty()
-  @Length(3, 20)
+  @Length(5, 20)
+  @Contains(" ", { message: "Full Name must contain a space." })
   full_name: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(6, 50)
-  password: string;
-
-  @IsNotEmpty()
-  @IsPhoneNumber()
+  @IsMobilePhone()
   phone_number: string;
-
-  constructor(
-    full_name: string,
-    email: string,
-    password: string,
-    phone_number: string
-  ) {
-    this.full_name = full_name;
-    this.email = email;
-    this.password = password;
-    this.phone_number = phone_number;
-  }
 }
 export default RegisterAccountInput;

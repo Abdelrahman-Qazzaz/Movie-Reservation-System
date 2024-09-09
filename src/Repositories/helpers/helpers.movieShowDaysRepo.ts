@@ -1,12 +1,12 @@
 import db from "src/db";
-import { getWithFilterReqQuery } from "src/types/Movie Show Days/filter.movieShowDays";
-import MovieShowDay from "src/types/models/movieShowDay";
+import MsdFilterQuery from "src/dto/Search by filter/filter.movieShowDays.dto";
+import { movie_show_days as movie_show_day } from "@prisma/client";
 
-export async function filterByTimeOfDay(reqQuery: getWithFilterReqQuery) {
+export async function filterByTimeOfDay(reqQuery: MsdFilterQuery) {
   if (reqQuery.time_of_day_gt && reqQuery.time_of_day_lt) {
-    const gt: MovieShowDay[] =
+    const gt: movie_show_day[] =
       await db.$queryRaw`SELECT * FROM filter_show_days_by_the_times_of_their_instances_gt(${reqQuery.time_of_day_gt});`;
-    const lt: MovieShowDay[] =
+    const lt: movie_show_day[] =
       await db.$queryRaw`SELECT * FROM filter_show_days_by_the_times_of_their_instances_lt(${reqQuery.time_of_day_lt});`;
     if (gt.length && lt.length)
       return gt.filter((movieShowDay) =>
@@ -19,20 +19,20 @@ export async function filterByTimeOfDay(reqQuery: getWithFilterReqQuery) {
 
   if (reqQuery.time_of_day_gt)
     return await db.$queryRaw<
-      MovieShowDay[]
+      movie_show_day[]
     >`SELECT * FROM filter_show_days_by_the_times_of_their_instances_gt(${reqQuery.time_of_day_gt});`;
 
   if (reqQuery.time_of_day_lt)
     return await db.$queryRaw<
-      MovieShowDay[]
+      movie_show_day[]
     >`SELECT * FROM filter_show_days_by_the_times_of_their_instances_lt(${reqQuery.time_of_day_lt});`;
 
   return await db.movie_show_days.findMany(); // return all movie show days
 }
 
 export function filterByDate(
-  reqQuery: getWithFilterReqQuery,
-  movieShowDays: MovieShowDay[] | null
+  reqQuery: MsdFilterQuery,
+  movieShowDays: movie_show_day[] | null
 ) {
   if (!movieShowDays) return null;
 
@@ -59,16 +59,16 @@ export function filterByDate(
 }
 
 export function filterByHasInstancesWithSeatsLeft(
-  reqQuery: getWithFilterReqQuery,
-  movieShowDays: MovieShowDay[] | null
+  reqQuery: MsdFilterQuery,
+  movieShowDays: movie_show_day[] | null
 ) {
   if (!movieShowDays) return null;
-  if (reqQuery.has_instances_with_seats_left === "true") {
+  if (reqQuery.has_instances_with_seats_left) {
     movieShowDays.filter(
       (movieShowDay) => movieShowDay.has_instances_with_seats_left
     );
   }
-  if (reqQuery.has_instances_with_seats_left === "false") {
+  if (reqQuery.has_instances_with_seats_left) {
     movieShowDays.filter(
       (movieShowDay) => !movieShowDay.has_instances_with_seats_left
     );

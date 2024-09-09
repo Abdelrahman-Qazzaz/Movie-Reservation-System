@@ -1,13 +1,12 @@
-import MovieShowDay from "src/types/models/movieShowDay";
+import { movie_show_days as movie_show_day } from "@prisma/client";
 import db from "../db";
-
 import * as helper from "./helpers/helpers.movieShowDaysRepo";
-import { getWithFilterReqQuery } from "src/types/Movie Show Days/filter.movieShowDays";
+import MsdFilterQuery from "src/dto/Search by filter/filter.movieShowDays.dto";
 
-export async function getById(id: string) {
+export async function getById(id: number) {
   try {
     return await db.movie_show_days.findFirst({
-      where: { id: parseInt(id) },
+      where: { id },
     });
   } catch (error) {
     console.log(error);
@@ -21,11 +20,11 @@ export async function get10(skip: number = 0) {
   return await db.movie_show_days.findMany({ take: 10, skip });
 }
 
-export async function insert(movie_id: number, date: string) {
-  return await db.movie_show_days.create({ data: { movie_id, date } });
+export async function insert(input: { movie_id: number; date: string }) {
+  return await db.movie_show_days.create({ data: input });
 }
 
-export async function get_movie_show_day_details(movieShowDayId: string) {
+export async function get_movie_show_day_details(movieShowDayId: number) {
   try {
     return await db.$queryRaw`SELECT * FROM get_movie_show_day_details(${movieShowDayId}::integer)`;
   } catch (error) {
@@ -35,11 +34,11 @@ export async function get_movie_show_day_details(movieShowDayId: string) {
 }
 
 export async function getWithFilter(
-  reqQuery: getWithFilterReqQuery,
+  reqQuery: MsdFilterQuery,
   offset: number = 0,
   limit: number = 0
 ) {
-  let movieShowDays: MovieShowDay[] | null = null;
+  let movieShowDays: movie_show_day[] | null = null;
   if (reqQuery.time_of_day_gt || reqQuery.time_of_day_lt) {
     // filter by time of instances
     movieShowDays = await helper.filterByTimeOfDay(reqQuery);
@@ -49,9 +48,9 @@ export async function getWithFilter(
   }
 
   //  date
-  movieShowDays = await helper.filterByDate(reqQuery, movieShowDays);
+  movieShowDays = helper.filterByDate(reqQuery, movieShowDays);
 
-  movieShowDays = await helper.filterByHasInstancesWithSeatsLeft(
+  movieShowDays = helper.filterByHasInstancesWithSeatsLeft(
     reqQuery,
     movieShowDays
   );

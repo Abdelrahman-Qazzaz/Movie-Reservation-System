@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import env from "dotenv";
 
 import Middleware from "../types/Middleware";
-import User from "src/types/User";
+import { users as user } from "@prisma/client";
 
 env.config();
 
@@ -29,7 +29,7 @@ export const verifyTokenAndSetReqUser: Middleware = (req, res, next) => {
     console.log(payload);
     if (err) return res.sendStatus(403);
     if (typeof payload !== "string" && payload) {
-      const user = payload.data as User;
+      const user = payload.data as user;
       req.user = user;
     }
 

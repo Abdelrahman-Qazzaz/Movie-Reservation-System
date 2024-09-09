@@ -1,13 +1,12 @@
-import { IsString, IsEmail, IsNotEmpty, Length } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsEmail, IsStrongPassword } from "class-validator";
 
 class LogIntoAccountInput {
   @IsEmail()
-  @IsNotEmpty()
+  @Transform(({ value }) => value.toLowerCase(), { toClassOnly: true })
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @Length(6, 50)
+  @IsStrongPassword()
   password: string;
 
   constructor(email: string, password: string) {

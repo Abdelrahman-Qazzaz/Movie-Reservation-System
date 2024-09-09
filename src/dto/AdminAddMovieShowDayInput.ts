@@ -1,15 +1,13 @@
-import { IsDateString, IsNotEmpty } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsDate, IsNotEmpty } from "class-validator";
 
 export class AdminAddMovieShowDayInput {
+  @Transform(({ value }) => Number(value), { toClassOnly: true })
   @IsNotEmpty()
   movie_id: number;
 
-  @IsDateString()
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
   @IsNotEmpty()
-  date: string;
-
-  constructor(movie_id: number, date: string) {
-    this.movie_id = movie_id;
-    this.date = date;
-  }
+  @IsDate()
+  date: Date;
 }
