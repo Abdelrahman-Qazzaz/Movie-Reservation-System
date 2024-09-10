@@ -1,3 +1,4 @@
+import RegisterAccountInput from "src/dto/RegisterAccountInput";
 import db from "../db";
 import { users as user } from "@prisma/client";
 class UserRepository {
@@ -19,7 +20,7 @@ class UserRepository {
     return await db.users.findFirst({ where: filter });
   }
 
-  async createUser(user: user) {
+  async createUser(user: RegisterAccountInput) {
     return await db.users.create({ data: user });
   }
 

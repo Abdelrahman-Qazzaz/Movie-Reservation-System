@@ -12,8 +12,7 @@ const moviesRouter = express.Router();
 // release_date_lt
 // sort_by_popularity (boolean, default: false)
 moviesRouter.get("/", moviesController.get);
-// moviesRouter.get("/:title", moviesController.getByTitle);
 
-// add filter by release date
+moviesRouter.get("/:title", moviesController.getByTitle);
 
 export default moviesRouter;

@@ -1,10 +1,10 @@
 import ReqHandler from "src/types/RequestHandler";
-import * as moviesController from "./moviesController";
 import { AdminAddMovieShowDayInput } from "src/dto/AdminAddMovieShowDayInput";
 import * as movieShowDaysRepository from "src/Repositories/movieShowDaysRepository";
 import MsdFilterQuery from "src/dto/Search by filter/filter.movieShowDays.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
+import * as moviesRepository from "../Repositories/moviesRepository";
 export const get: ReqHandler = async (req, res) => {
   const [errors, filter] = await transformAndValidate(
     MsdFilterQuery,
@@ -52,7 +52,7 @@ export const add: ReqHandler = async (req, res) => {
   );
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
   try {
-    const targetMovie = await moviesController.getById(input.movie_id);
+    const targetMovie = await moviesRepository.getById(input.movie_id);
     if (!targetMovie)
       return res
         .status(404)

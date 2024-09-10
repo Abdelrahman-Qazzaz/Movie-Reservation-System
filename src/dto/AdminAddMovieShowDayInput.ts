@@ -7,7 +7,6 @@ export class AdminAddMovieShowDayInput {
   movie_id: number;
 
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  @IsNotEmpty()
   @IsDate()
   date: Date;
 }

@@ -17,7 +17,7 @@ export const register: ReqHandler = async (req, res) => {
       req.body
     );
     if (errors.length) return HTTPResponses.BadRequest(res, errors);
-    const user: user = { ...input };
+    const user: RegisterAccountInput = { ...input };
 
     const existingUser = await userRepository.getByFilter({
       email: user.email,

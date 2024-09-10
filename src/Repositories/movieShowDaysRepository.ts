@@ -20,7 +20,7 @@ export async function get10(skip: number = 0) {
   return await db.movie_show_days.findMany({ take: 10, skip });
 }
 
-export async function insert(input: { movie_id: number; date: string }) {
+export async function insert(input: { movie_id: number; date: Date }) {
   return await db.movie_show_days.create({ data: input });
 }
 

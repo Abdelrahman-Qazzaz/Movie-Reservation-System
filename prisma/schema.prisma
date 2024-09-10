@@ -48,6 +48,8 @@ model movies {
   adult           Boolean
   image_url       String
   movie_show_days movie_show_days[]
+
+  @@index([title], map: "movie_title")
 }
 
 model transactions {
