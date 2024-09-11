@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
 import { IsDate, IsNotEmpty } from "class-validator";
 
-export class AdminAddMovieShowDayInput {
+export class AdminAddMSDInput {
   @Transform(({ value }) => Number(value), { toClassOnly: true })
   @IsNotEmpty()
   movie_id: number;

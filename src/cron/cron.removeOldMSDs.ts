@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import db from "../db";
-function cronScheduler() {
+export function cronRemoveOldMSDs() {
   cron.schedule("*/10 * * * *", async () => {
     // every 10 minutes
     await db.query(
@@ -8,5 +8,3 @@ function cronScheduler() {
     );
   });
 }
-
-export default cronScheduler;

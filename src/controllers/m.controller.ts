@@ -1,31 +1,23 @@
 import ReqHandler from "src/types/RequestHandler";
-import db from "../db";
-import * as moviesRepository from "../Repositories/moviesRepository";
-import { plainToClass } from "class-transformer";
-import MoviesSearchQuery from "src/dto/Search by filter/filter.movies.dto";
-import { validate } from "class-validator";
+import * as mRepository from "../Repositories/m.repository";
+import { MSearchFilter } from "src/dto/Search by filter/m.filter.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
-import { Prisma } from "@prisma/client";
-import { Response } from "express";
 
 export const get: ReqHandler = async (req, res) => {
-  const [errors, filter] = await transformAndValidate(
-    MoviesSearchQuery,
-    req.query
-  );
+  const [errors, filter] = await transformAndValidate(MSearchFilter, req.query);
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
 
   const offset = filter.page ? filter.page * 10 : 0;
 
-  if (Object.keys(filter).length === 0) return await moviesRepository.getAll();
+  if (Object.keys(filter).length === 0) return await mRepository.getAll();
 
   try {
     if (Object.keys(filter).length === 1 && filter.page) {
-      const showDays = await moviesRepository.get10(offset);
+      const showDays = await mRepository.get10(offset);
       return HTTPResponses.SuccessResponse(res, { showDays });
     } else {
-      const showDays = await moviesRepository.getWithFilter(
+      const showDays = await mRepository.getWithFilter(
         filter,
         offset,
         filter.limit
@@ -43,7 +35,7 @@ export const getByTitle: ReqHandler = async (req, res) => {
   const { title } = req.params;
   if (!title || title.trim() === "") return HTTPResponses.BadRequest(res);
   try {
-    const movieByTitle = await moviesRepository.getByTitle(title);
+    const movieByTitle = await mRepository.getByTitle(title);
     if (movieByTitle)
       return HTTPResponses.SuccessResponse(res, { movie: movieByTitle });
     const [error, movieById] = await getById(parseInt(title));
@@ -57,7 +49,7 @@ export const getByTitle: ReqHandler = async (req, res) => {
 
 const getById = async (id: number) => {
   try {
-    return [null, await moviesRepository.getById(id)];
+    return [null, await mRepository.getById(id)];
   } catch (error) {
     return [error, null];
   }

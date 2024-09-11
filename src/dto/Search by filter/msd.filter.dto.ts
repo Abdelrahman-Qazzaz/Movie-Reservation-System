@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
 import { IsBoolean } from "class-validator";
 
-class MsdFilterQuery {
+export class MSDFilter {
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   date?: Date;
 
@@ -28,5 +28,3 @@ class MsdFilterQuery {
   )
   has_instances_with_seats_left?: boolean;
 }
-
-export default MsdFilterQuery;

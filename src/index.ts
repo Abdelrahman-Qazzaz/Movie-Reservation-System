@@ -1,14 +1,14 @@
 import express from "express";
 import env from "dotenv";
 import bodyParser from "body-parser";
-import movieShowDaysRouter from "./routes/movieShowDaysRouter";
-import stripeRouter from "./Purchases/stripeRouter";
-import cronScheduler from "./cron/RemoveOldMovieShowDays";
-import authRouter from "./Auth/authRouter";
-import moviesRouter from "./routes/moviesRouter";
-import movieShowDaysInstancesRouter from "./routes/movieShowDaysInstancesRouter";
+import { stripeRouter } from "./Purchases/stripe.router";
+import { cronRemoveOldMSDs } from "./cron/cron.removeOldMSDs";
+import { authRouter } from "./Auth/auth.router";
+import { mRouter } from "./routes/m.router";
+import { msdRouter } from "./routes/msd.router";
+import { msdiRouter } from "./routes/msdi.router";
 
-cronScheduler();
+cronRemoveOldMSDs();
 env.config();
 
 const app = express();
@@ -23,9 +23,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/auth", authRouter);
-app.use("/movies", moviesRouter);
-app.use("/movie-show-days", movieShowDaysRouter);
-app.use("/movie-show-days-instances", movieShowDaysInstancesRouter);
+app.use("/m", mRouter);
+app.use("/msd", msdRouter);
+app.use("/msdi", msdiRouter);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

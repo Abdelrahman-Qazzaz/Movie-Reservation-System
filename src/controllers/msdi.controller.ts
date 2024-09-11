@@ -1,19 +1,19 @@
 import ReqHandler from "src/types/RequestHandler";
-import { AdminAddMovieShowDayInstanceInput } from "src/dto/AdminAddMovieShowDayInstanceInput";
-import * as moviesShowDaysInstancesRepository from "../Repositories/movieShowDaysInstancesRepository";
+import { AdminAddMSDIInput } from "src/dto/admin.add.msdi.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
-import * as movieShowDaysRepository from "../Repositories/movieShowDaysRepository";
+import * as msdiRepository from "../Repositories/msdi.repository";
+import * as msdRepository from "../Repositories/msd.repository";
 
 export const create: ReqHandler = async (req, res) => {
   const input = { ...req.body };
   const [errors, transformedInput] = await transformAndValidate(
-    AdminAddMovieShowDayInstanceInput,
+    AdminAddMSDIInput,
     input
   );
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
 
-  const movie_show_day = await movieShowDaysRepository.getById(
+  const movie_show_day = await msdRepository.getById(
     transformedInput.movie_show_day_id
   );
   if (!movie_show_day)
@@ -22,17 +22,14 @@ export const create: ReqHandler = async (req, res) => {
     });
 
   try {
-    await moviesShowDaysInstancesRepository.add(transformedInput);
+    await msdiRepository.add(transformedInput);
   } catch (error) {}
 };
 
 export const get: ReqHandler = async (req, res) => {
   const [errors, filter] = await transformAndValidate(temp, req.body);
   try {
-    HTTPResponses.SuccessResponse(
-      res,
-      await moviesShowDaysInstancesRepository.get()
-    );
+    HTTPResponses.SuccessResponse(res, await msdiRepository.get());
   } catch (error) {
     HTTPResponses.InternalServerError(res);
   }

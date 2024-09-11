@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
-import { IsDate, IsDateString, IsOptional } from "class-validator";
+import { IsDate, IsOptional } from "class-validator";
 
-class MoviesSearchQuery {
+export class MFilter {
   @Transform(
     ({ value }) => {
       if (value === "true" || value === true) {
@@ -65,5 +65,3 @@ class MoviesSearchQuery {
   )
   sort_by_popularity?: boolean;
 }
-
-export default MoviesSearchQuery;

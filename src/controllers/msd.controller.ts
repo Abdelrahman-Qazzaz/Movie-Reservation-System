@@ -1,18 +1,15 @@
 import ReqHandler from "src/types/RequestHandler";
-import { AdminAddMovieShowDayInput } from "src/dto/AdminAddMovieShowDayInput";
-import * as movieShowDaysRepository from "src/Repositories/movieShowDaysRepository";
-import MsdFilterQuery from "src/dto/Search by filter/filter.movieShowDays.dto";
+import { AdminAddMovieShowDayInput } from "src/dto/admin.add.msd.dto";
+import * as msdRepository from "src/Repositories/msd.repository";
+import { MSDFilter } from "src/dto/Search by filter/msd.filter.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
-import * as moviesRepository from "../Repositories/moviesRepository";
+import * as mRepository from "../Repositories/m.repository";
 export const get: ReqHandler = async (req, res) => {
-  const [errors, filter] = await transformAndValidate(
-    MsdFilterQuery,
-    req.query
-  );
+  const [errors, filter] = await transformAndValidate(MSDFilter, req.query);
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
   try {
-    const movieShowDays = await movieShowDaysRepository.getWithFilter(filter);
+    const movieShowDays = await msdRepository.getWithFilter(filter);
     return HTTPResponses.SuccessResponse(res, movieShowDays);
   } catch (error) {
     console.log(error);
@@ -22,9 +19,7 @@ export const get: ReqHandler = async (req, res) => {
 
 export const getById: ReqHandler = async (req, res) => {
   try {
-    const movieShowDay = await movieShowDaysRepository.getById(
-      parseInt(req.params.id)
-    );
+    const movieShowDay = await msdRepository.getById(parseInt(req.params.id));
     return HTTPResponses.SuccessResponse(res, movieShowDay);
   } catch (error) {
     return HTTPResponses.InternalServerError(res);
@@ -35,9 +30,7 @@ export const getById: ReqHandler = async (req, res) => {
 export const getDetails: ReqHandler = async (req, res) => {
   try {
     const movie_show_day_details =
-      await movieShowDaysRepository.get_movie_show_day_details(
-        parseInt(req.params.id)
-      );
+      await msdRepository.get_movie_show_day_details(parseInt(req.params.id));
     return HTTPResponses.SuccessResponse(res, movie_show_day_details);
   } catch (error) {
     return HTTPResponses.InternalServerError(res);
@@ -52,13 +45,13 @@ export const add: ReqHandler = async (req, res) => {
   );
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
   try {
-    const targetMovie = await moviesRepository.getById(input.movie_id);
+    const targetMovie = await mRepository.getById(input.movie_id);
     if (!targetMovie)
       return res
         .status(404)
         .json({ message: `Couldn't find a movie with id ${input.movie_id} ` });
 
-    const Show_Day = await movieShowDaysRepository.insert(input);
+    const Show_Day = await msdRepository.insert(input);
     return HTTPResponses.SuccessResponse(res, Show_Day);
   } catch (error) {
     console.log(error);

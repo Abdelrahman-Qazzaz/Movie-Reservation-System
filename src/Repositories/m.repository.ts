@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import db from "src/db";
-import MoviesSearchQuery from "src/dto/Search by filter/filter.movies.dto";
+import { MSearchFilter } from "src/dto/Search by filter/m.filter.dto";
 
 export async function getAll() {
   return await db.movies.findMany();
@@ -19,7 +19,7 @@ export async function getByTitle(title: string) {
 }
 
 export async function getWithFilter(
-  filter: MoviesSearchQuery,
+  filter: MSearchFilter,
   offset: number = 0,
   limit: number | undefined
 ) {

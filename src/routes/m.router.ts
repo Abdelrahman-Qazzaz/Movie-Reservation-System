@@ -1,7 +1,7 @@
 import express from "express";
-import * as moviesController from "../controllers/moviesController";
+import * as mController from "../controllers/m.controller";
 
-const moviesRouter = express.Router();
+export const mRouter = express.Router();
 
 //root (/movies)
 // optional Query Parameters: ?page=1 (1 page = 10 movies)
@@ -11,8 +11,6 @@ const moviesRouter = express.Router();
 // release_date_gt
 // release_date_lt
 // sort_by_popularity (boolean, default: false)
-moviesRouter.get("/", moviesController.get);
+mRouter.get("/", mController.get);
 
-moviesRouter.get("/:title", moviesController.getByTitle);
-
-export default moviesRouter;
+mRouter.get("/:title", mController.getByTitle);

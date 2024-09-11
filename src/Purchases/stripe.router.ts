@@ -1,7 +1,7 @@
 import express from "express";
 
-import * as stripeController from "./stripeController";
-const stripeRouter = express.Router();
+import * as stripeController from "./stripe.controller";
+export const stripeRouter = express.Router();
 
 stripeRouter.get("/:ticket_id", stripeController.createCheckoutSession);
 stripeRouter.post(
@@ -9,5 +9,3 @@ stripeRouter.post(
   express.raw({ type: "application/json" }),
   stripeController.webHook
 );
-
-export default stripeRouter;
