@@ -7,3 +7,9 @@ export async function add(data: AdminAddMovieShowDayInstanceInput) {
     data: { ...data, has_seats_left: false },
   });
 }
+
+export async function get() {
+  return await db.movie_show_days_instances.findMany({
+    include: { movie_show_days: true },
+  });
+}

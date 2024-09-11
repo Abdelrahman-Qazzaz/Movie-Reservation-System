@@ -4,6 +4,7 @@ import * as moviesShowDaysInstancesRepository from "../Repositories/movieShowDay
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
 import * as movieShowDaysRepository from "../Repositories/movieShowDaysRepository";
+
 export const create: ReqHandler = async (req, res) => {
   const input = { ...req.body };
   const [errors, transformedInput] = await transformAndValidate(
@@ -23,4 +24,16 @@ export const create: ReqHandler = async (req, res) => {
   try {
     await moviesShowDaysInstancesRepository.add(transformedInput);
   } catch (error) {}
+};
+
+export const get: ReqHandler = async (req, res) => {
+  const [errors, filter] = await transformAndValidate(temp, req.body);
+  try {
+    HTTPResponses.SuccessResponse(
+      res,
+      await moviesShowDaysInstancesRepository.get()
+    );
+  } catch (error) {
+    HTTPResponses.InternalServerError(res);
+  }
 };

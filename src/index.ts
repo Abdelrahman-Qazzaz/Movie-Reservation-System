@@ -6,6 +6,7 @@ import stripeRouter from "./Purchases/stripeRouter";
 import cronScheduler from "./cron/RemoveOldMovieShowDays";
 import authRouter from "./Auth/authRouter";
 import moviesRouter from "./routes/moviesRouter";
+import movieShowDaysInstancesRouter from "./routes/movieShowDaysInstancesRouter";
 
 cronScheduler();
 env.config();
@@ -24,7 +25,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/movies", moviesRouter);
 app.use("/movie-show-days", movieShowDaysRouter);
-// app.use("/movie-show-days-instances", movieShowDaysInstancesRouter);
+app.use("/movie-show-days-instances", movieShowDaysInstancesRouter);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
