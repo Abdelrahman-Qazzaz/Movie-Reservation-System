@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsDate, IsOptional } from "class-validator";
+import { IsDate, IsDateString, IsOptional } from "class-validator";
 import { Filter } from "./filter.dto";
 
 export class MFilter extends Filter {
@@ -32,18 +32,18 @@ export class MFilter extends Filter {
   languages?: string[];
 
   @IsOptional()
+  @IsDateString()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  @IsDate()
   release_date?: Date;
 
   @IsOptional()
+  @IsDateString()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  @IsDate()
   release_date_gt?: Date;
 
   @IsOptional()
+  @IsDateString()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  @IsDate()
   release_date_lt?: Date;
 
   @Transform(

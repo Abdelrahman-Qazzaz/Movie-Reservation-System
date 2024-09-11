@@ -1,9 +1,9 @@
 import { movie_show_days_instances as movie_show_days_instance } from "@prisma/client";
 import db from "../db";
-import { AdminAddMovieShowDayInstanceInput } from "src/dto/AdminAddMovieShowDayInstanceInput";
+import { AdminAddMSDIInput } from "src/dto/admin.add.msdi.dto";
 import { MsdiFilter } from "src/dto/Search by filter/msdi.filter.dto";
 
-export async function add(data: AdminAddMovieShowDayInstanceInput) {
+export async function add(data: AdminAddMSDIInput) {
   return await db.movie_show_days_instances.create({
     data: { ...data, has_seats_left: false },
   });

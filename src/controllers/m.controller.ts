@@ -17,11 +17,7 @@ export const get: ReqHandler = async (req, res) => {
       const showDays = await mRepository.get10(offset);
       return HTTPResponses.SuccessResponse(res, { showDays });
     } else {
-      const showDays = await mRepository.getWithFilter(
-        filter,
-        offset,
-        filter.limit
-      );
+      const showDays = await mRepository.getWithFilter(filter);
       return HTTPResponses.SuccessResponse(res, { showDays });
     }
   } catch (error) {

@@ -37,7 +37,14 @@ export async function getWithFilter(filter: MFilter) {
     lt: filter.release_date_lt,
   };
 
-  return limit
-    ? await db.movies.findMany({ where, orderBy, skip: offset, take: limit })
+  const offset = filter.page ? filter.page * 10 : 0;
+
+  return filter.limit
+    ? await db.movies.findMany({
+        where,
+        orderBy,
+        skip: offset,
+        take: filter.limit,
+      })
     : await db.movies.findMany({ where, orderBy, skip: offset });
 }
