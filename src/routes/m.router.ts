@@ -12,5 +12,4 @@ export const mRouter = express.Router();
 // release_date_lt
 // sort_by_popularity (boolean, default: false)
 mRouter.get("/", mController.get);
-
 mRouter.get("/:title", mController.getByTitle);

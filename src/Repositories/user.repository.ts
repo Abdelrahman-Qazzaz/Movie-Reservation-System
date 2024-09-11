@@ -29,5 +29,4 @@ class UserRepository {
   }
 }
 
-const userRepository = new UserRepository();
-export default userRepository;
+export const userRepository = new UserRepository();

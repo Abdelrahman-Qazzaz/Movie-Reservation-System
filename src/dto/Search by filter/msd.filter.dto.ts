@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
-import { IsBoolean } from "class-validator";
+import { MFilter } from "./m.filter.dto";
 
-export class MSDFilter {
+export class MSDFilter extends MFilter {
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   date?: Date;
 

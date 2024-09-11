@@ -1,7 +1,7 @@
 import { movie_show_days as movie_show_day } from "@prisma/client";
 import db from "../db";
 import * as helper from "./helpers/helpers.movieShowDaysRepo";
-import { MSDSearchFilter } from "src/dto/Search by filter/msd.filter.dto";
+import { MSDFilter } from "src/dto/Search by filter/msd.filter.dto";
 
 export async function getById(id: number) {
   try {
@@ -33,11 +33,7 @@ export async function get_movie_show_day_details(movieShowDayId: number) {
   }
 }
 
-export async function getWithFilter(
-  reqQuery: MSDSearchFilter,
-  offset: number = 0,
-  limit: number = 0
-) {
+export async function getWithFilter(reqQuery: MSDFilter) {
   let movieShowDays: movie_show_day[] | null = null;
   if (reqQuery.time_of_day_gt || reqQuery.time_of_day_lt) {
     // filter by time of instances
@@ -55,5 +51,5 @@ export async function getWithFilter(
     movieShowDays
   );
 
-  return movieShowDays?.slice(offset, limit);
+  return movieShowDays?.slice(reqQuery.page, reqQuery.limit);
 }

@@ -1,7 +1,8 @@
 import { Transform } from "class-transformer";
 import { IsDate, IsOptional } from "class-validator";
+import { Filter } from "./filter.dto";
 
-export class MFilter {
+export class MFilter extends Filter {
   @Transform(
     ({ value }) => {
       if (value === "true" || value === true) {
@@ -44,12 +45,6 @@ export class MFilter {
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   @IsDate()
   release_date_lt?: Date;
-
-  @Transform(({ value }) => Number(value), { toClassOnly: true })
-  limit?: number;
-
-  @Transform(({ value }) => Number(value), { toClassOnly: true })
-  page?: number;
 
   @Transform(
     ({ value }) => {

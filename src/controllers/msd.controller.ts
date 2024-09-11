@@ -1,5 +1,5 @@
 import ReqHandler from "src/types/RequestHandler";
-import { AdminAddMovieShowDayInput } from "src/dto/admin.add.msd.dto";
+import { AdminAddMSDInput } from "src/dto/admin.add.msd.dto";
 import * as msdRepository from "src/Repositories/msd.repository";
 import { MSDFilter } from "src/dto/Search by filter/msd.filter.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
@@ -40,7 +40,7 @@ export const getDetails: ReqHandler = async (req, res) => {
 //admin only
 export const add: ReqHandler = async (req, res) => {
   const [errors, input] = await transformAndValidate(
-    AdminAddMovieShowDayInput,
+    AdminAddMSDInput,
     req.body
   );
   if (errors.length) return HTTPResponses.BadRequest(res, errors);

@@ -4,6 +4,7 @@ import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
 import * as msdiRepository from "../Repositories/msdi.repository";
 import * as msdRepository from "../Repositories/msd.repository";
+import { MsdiFilter } from "src/dto/Search by filter/msdi.filter.dto";
 
 export const create: ReqHandler = async (req, res) => {
   const input = { ...req.body };
@@ -27,8 +28,10 @@ export const create: ReqHandler = async (req, res) => {
 };
 
 export const get: ReqHandler = async (req, res) => {
-  const [errors, filter] = await transformAndValidate(temp, req.body);
+  const [errors, filter] = await transformAndValidate(MsdiFilter, req.query);
+  console.log(filter);
   try {
+    await msdiRepository.get(filter);
     HTTPResponses.SuccessResponse(res, await msdiRepository.get());
   } catch (error) {
     HTTPResponses.InternalServerError(res);
