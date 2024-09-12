@@ -19,6 +19,7 @@ export async function getByTitle(title: string) {
 }
 
 export async function getWithFilter(filter: MFilter) {
+  console.log(filter);
   let where: Prisma.moviesWhereInput = {};
   let orderBy = {} as any;
 

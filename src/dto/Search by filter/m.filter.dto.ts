@@ -1,6 +1,9 @@
 import { Transform } from "class-transformer";
-import { IsDate, IsDateString, IsOptional } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 import { Filter } from "./filter.dto";
+import { Type } from "class-transformer";
+
+class WhereClause {}
 
 export class MFilter extends Filter {
   @Transform(
@@ -11,7 +14,6 @@ export class MFilter extends Filter {
       if (value === "false" || value === false) {
         return false;
       }
-      return Boolean(value); // Converts to a primitive boolean
     },
     { toClassOnly: true }
   )
@@ -32,17 +34,14 @@ export class MFilter extends Filter {
   languages?: string[];
 
   @IsOptional()
-  @IsDateString()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   release_date?: Date;
 
   @IsOptional()
-  @IsDateString()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   release_date_gt?: Date;
 
   @IsOptional()
-  @IsDateString()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   release_date_lt?: Date;
 
