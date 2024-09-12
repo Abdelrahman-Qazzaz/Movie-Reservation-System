@@ -1,10 +1,10 @@
 import ReqHandler from "src/types/RequestHandler";
-import { AdminAddMSDIInput } from "src/dto/admin.add.msdi.dto";
+import { AdminAddMSDIInput } from "src/dto/Admin.add.msdi.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
 import * as msdiRepository from "../Repositories/msdi.repository";
 import * as msdRepository from "../Repositories/msd.repository";
-import { MsdiFilter } from "src/dto/Search by filter/msdi.filter.dto";
+import { MsdiFilter } from "src/dto/Search by filter/Msdi.filter.dto";
 
 export const create: ReqHandler = async (req, res) => {
   const input = { ...req.body };

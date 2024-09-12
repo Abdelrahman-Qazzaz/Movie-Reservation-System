@@ -1,9 +1,7 @@
-import { Transform } from "class-transformer";
-import { IsNotEmpty, IsOptional } from "class-validator";
-import { Filter } from "./filter.dto";
+import { instanceToPlain, plainToInstance, Transform } from "class-transformer";
+import { IsOptional } from "class-validator";
+import { Filter } from "./Filter.dto";
 import { Type } from "class-transformer";
-
-class WhereClause {}
 
 export class MFilter extends Filter {
   @Transform(

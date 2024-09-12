@@ -1,7 +1,7 @@
 import { movie_show_days as movie_show_day } from "@prisma/client";
 import db from "../db";
 import * as helper from "./helpers/helpers.movieShowDaysRepo";
-import { MSDFilter } from "src/dto/Search by filter/msd.filter.dto";
+import { MSDFilter } from "src/dto/Search by filter/Msd.filter.dto";
 
 export async function getById(id: number) {
   try {

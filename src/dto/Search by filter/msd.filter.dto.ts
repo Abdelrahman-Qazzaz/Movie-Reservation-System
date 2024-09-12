@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { MFilter } from "./m.filter.dto";
+import { MFilter } from "./M.filter.dto";
 
 export class MSDFilter extends MFilter {
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
@@ -13,6 +13,20 @@ export class MSDFilter extends MFilter {
 
   time_of_day_gt?: string;
   time_of_day_lt?: string;
+
+  @Transform(
+    ({ value }) => {
+      if (value === "true" || value === true) {
+        return true;
+      }
+      if (value === "false" || value === false) {
+        return false;
+      }
+      return Boolean(value); // Converts to a primitive boolean
+    },
+    { toClassOnly: true }
+  )
+  sort_by_date?: boolean;
 
   @Transform(
     ({ value }) => {

@@ -1,5 +1,5 @@
 import ReqHandler from "src/types/RequestHandler";
-import { userRepository } from "src/Repositories/user.repository";
+import { userRepository } from "src/Repositories/User.repository";
 import RegisterAccountInput from "src/dto/RegisterAccountInput";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";

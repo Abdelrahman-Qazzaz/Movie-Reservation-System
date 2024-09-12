@@ -1,12 +1,14 @@
 import ReqHandler from "src/types/RequestHandler";
 import * as mRepository from "../Repositories/m.repository";
-import { MFilter } from "src/dto/Search by filter/m.filter.dto";
+import { MFilter } from "src/dto/Search by filter/M.filter.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
+import { FindMany } from "src/utils/FindMany";
 
 export const get: ReqHandler = async (req, res) => {
   const [errors, filter] = await transformAndValidate(MFilter, req.query);
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
+  const findMany = new FindMany(filter);
 
   const offset = filter.page ? filter.page * 10 : 0;
 

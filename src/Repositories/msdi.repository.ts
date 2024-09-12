@@ -1,7 +1,7 @@
 import { movie_show_days_instances as movie_show_days_instance } from "@prisma/client";
 import db from "../db";
-import { AdminAddMSDIInput } from "src/dto/admin.add.msdi.dto";
-import { MsdiFilter } from "src/dto/Search by filter/msdi.filter.dto";
+import { AdminAddMSDIInput } from "src/dto/Admin.add.msdi.dto";
+import { MsdiFilter } from "src/dto/Search by filter/Msdi.filter.dto";
 
 export async function add(data: AdminAddMSDIInput) {
   return await db.movie_show_days_instances.create({

@@ -1,7 +1,7 @@
 import ReqHandler from "src/types/RequestHandler";
-import { AdminAddMSDInput } from "src/dto/admin.add.msd.dto";
+import { AdminAddMSDInput } from "src/dto/Admin.add.msd.dto";
 import * as msdRepository from "src/Repositories/msd.repository";
-import { MSDFilter } from "src/dto/Search by filter/msd.filter.dto";
+import { MSDFilter } from "src/dto/Search by filter/Msd.filter.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
 import * as mRepository from "../Repositories/m.repository";

@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import db from "src/db";
-import { MFilter } from "src/dto/Search by filter/m.filter.dto";
+import { MFilter } from "src/dto/Search by filter/M.filter.dto";
 
 export async function getAll() {
   return await db.movies.findMany();
@@ -19,7 +19,6 @@ export async function getByTitle(title: string) {
 }
 
 export async function getWithFilter(filter: MFilter) {
-  console.log(filter);
   let where: Prisma.moviesWhereInput = {};
   let orderBy = {} as any;
 
