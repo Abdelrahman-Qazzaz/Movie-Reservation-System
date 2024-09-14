@@ -1,13 +1,17 @@
 import ReqHandler from "src/types/RequestHandler";
 import { AdminAddMSDInput } from "src/dto/Admin.add.msd.dto";
 import * as msdRepository from "src/Repositories/msd.repository";
-import { MSDFilter } from "src/dto/Search by filter/Msd.filter.dto";
+import { MsdFilter } from "src/dto/Search by filter/Msd.filter.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
 import * as mRepository from "../Repositories/m.repository";
+import { FindMany } from "src/utils/FindMany/FindMany";
 export const get: ReqHandler = async (req, res) => {
-  const [errors, filter] = await transformAndValidate(MSDFilter, req.query);
+  const [errors, filter] = await transformAndValidate(MsdFilter, req.query);
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
+  const findMany = new FindMany(filter);
+  console.log("findMany");
+  console.log(findMany);
   try {
     const movieShowDays = await msdRepository.getWithFilter(filter);
     return HTTPResponses.SuccessResponse(res, movieShowDays);

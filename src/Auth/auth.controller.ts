@@ -1,9 +1,9 @@
 import ReqHandler from "src/types/RequestHandler";
 import { userRepository } from "src/Repositories/User.repository";
-import RegisterAccountInput from "src/dto/RegisterAccountInput";
+import RegisterAccountInput from "src/dto/RegisterAccountInput.dto";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
-import LogIntoAccountInput from "src/dto/LogIntoAccountInput";
+import LogIntoAccountInput from "src/dto/LogIntoAccountInput.dto";
 import * as JWT from "./JWT";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import { users as user } from "@prisma/client";

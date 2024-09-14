@@ -5,7 +5,7 @@ import {
   Contains,
   IsMobilePhone,
 } from "class-validator";
-import LogIntoAccountInput from "./LogIntoAccountInput";
+import LogIntoAccountInput from "./LogIntoAccountInput.dto";
 
 class RegisterAccountInput extends LogIntoAccountInput {
   @IsString()

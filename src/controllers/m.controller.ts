@@ -3,32 +3,18 @@ import * as mRepository from "../Repositories/m.repository";
 import { MFilter } from "src/dto/Search by filter/M.filter.dto";
 import transformAndValidate from "src/utils/inputTransformAndValidate";
 import * as HTTPResponses from "../utils/HTTPResponses";
-import { FindMany } from "src/utils/FindMany";
+import { FindMany } from "src/utils/FindMany/FindMany";
+import db from "src/db";
+import { fromInstanceToPlain } from "src/utils/Object manipulators/fromInstanceToPlain";
 
 export const get: ReqHandler = async (req, res) => {
   const [errors, filter] = await transformAndValidate(MFilter, req.query);
   if (errors.length) return HTTPResponses.BadRequest(res, errors);
+  console.log(filter);
   const findMany = new FindMany(filter);
-
-  const offset = filter.page ? filter.page * 10 : 0;
-
-  if (Object.keys(filter).length === 0) return await mRepository.getAll();
-
-  try {
-    if (Object.keys(filter).length === 1 && filter.page) {
-      const showDays = await mRepository.get10(offset);
-      return HTTPResponses.SuccessResponse(res, { showDays });
-    } else {
-      const showDays = await mRepository.getWithFilter(filter);
-      return HTTPResponses.SuccessResponse(res, { showDays });
-    }
-  } catch (error) {
-    console.log(error);
-    return HTTPResponses.InternalServerError(res);
-  }
+  await db.movies.findMany(fromInstanceToPlain(findMany));
 };
 
-// req.param
 export const getByTitle: ReqHandler = async (req, res) => {
   const { title } = req.params;
   if (!title || title.trim() === "") return HTTPResponses.BadRequest(res);
@@ -36,7 +22,7 @@ export const getByTitle: ReqHandler = async (req, res) => {
     const movieByTitle = await mRepository.getByTitle(title);
     if (movieByTitle)
       return HTTPResponses.SuccessResponse(res, { movie: movieByTitle });
-    const [error, movieById] = await getById(parseInt(title));
+    const [error, movieById] = await getById(parseInt(title)); // this is incase someone tries to get a movie by id instead...
     return error
       ? HTTPResponses.BadRequest(res)
       : HTTPResponses.SuccessResponse(res, { movie: movieById });

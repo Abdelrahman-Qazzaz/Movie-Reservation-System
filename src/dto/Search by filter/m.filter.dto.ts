@@ -1,9 +1,12 @@
-import { instanceToPlain, plainToInstance, Transform } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsArray, IsBoolean, IsDate, IsOptional } from "class-validator";
 import { Filter } from "./Filter.dto";
-import { Type } from "class-transformer";
 
 export class MFilter extends Filter {
+  @IsOptional()
+  title: string;
+
+  @IsOptional()
   @Transform(
     ({ value }) => {
       if (value === "true" || value === true) {
@@ -15,8 +18,10 @@ export class MFilter extends Filter {
     },
     { toClassOnly: true }
   )
-  adult?: boolean;
+  @IsBoolean()
+  adult: boolean;
 
+  @IsOptional()
   @Transform(({ value }) => (Array.isArray(value) ? value : [value]), {
     toClassOnly: true,
   })
@@ -29,31 +34,37 @@ export class MFilter extends Filter {
       toClassOnly: true,
     }
   )
-  languages?: string[];
+  @IsArray()
+  languages: string[];
 
   @IsOptional()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  release_date?: Date;
+  @IsDate()
+  release_date: Date;
 
   @IsOptional()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  release_date_gt?: Date;
+  @IsDate()
+  release_date_gt: Date;
 
   @IsOptional()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  release_date_lt?: Date;
+  @IsDate()
+  release_date_lt: Date;
 
+  @IsOptional()
   @Transform(
     ({ value }) => {
-      if (value === "true" || value === true) {
+      if (value === "true") {
         return true;
       }
-      if (value === "false" || value === false) {
+      if (value === "false") {
         return false;
       }
-      return Boolean(value); // Converts to a primitive boolean
+      return;
     },
     { toClassOnly: true }
   )
-  sort_by_popularity?: boolean;
+  @IsBoolean()
+  sort_by_popularity: boolean;
 }

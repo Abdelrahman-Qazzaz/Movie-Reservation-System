@@ -1,19 +1,31 @@
 import { Transform } from "class-transformer";
 import { MFilter } from "./M.filter.dto";
+import { IsBoolean, IsDate, IsOptional, IsString } from "class-validator";
 
-export class MSDFilter extends MFilter {
+export class MsdFilter extends MFilter {
+  @IsOptional()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  date?: Date;
+  @IsDate()
+  date: Date;
 
+  @IsOptional()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  date_gt?: Date;
+  @IsDate()
+  date_gt: Date;
 
+  @IsOptional()
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
-  date_lt?: Date;
+  @IsDate()
+  date_lt: Date;
 
-  time_of_day_gt?: string;
-  time_of_day_lt?: string;
+  @IsOptional()
+  time_of_day_gt: string;
 
+  @IsOptional()
+  @IsString()
+  time_of_day_lt: string;
+
+  @IsOptional()
   @Transform(
     ({ value }) => {
       if (value === "true" || value === true) {
@@ -26,8 +38,10 @@ export class MSDFilter extends MFilter {
     },
     { toClassOnly: true }
   )
-  sort_by_date?: boolean;
+  @IsBoolean()
+  sort_by_date: boolean;
 
+  @IsOptional()
   @Transform(
     ({ value }) => {
       if (value === "true" || value === true) {
@@ -40,5 +54,6 @@ export class MSDFilter extends MFilter {
     },
     { toClassOnly: true }
   )
-  has_instances_with_seats_left?: boolean;
+  @IsBoolean()
+  has_instances_with_seats_left: boolean;
 }

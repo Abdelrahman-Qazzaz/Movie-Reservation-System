@@ -1,9 +1,14 @@
 import { Transform } from "class-transformer";
+import { IsNumber, IsOptional } from "class-validator";
 
 export class Filter {
+  @IsOptional()
   @Transform(({ value }) => Number(value), { toClassOnly: true })
-  limit?: number;
+  @IsNumber()
+  limit: number;
 
+  @IsOptional()
   @Transform(({ value }) => Number(value), { toClassOnly: true })
-  page?: number;
+  @IsNumber()
+  page: number;
 }
